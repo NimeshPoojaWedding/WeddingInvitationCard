@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#2a1b40" />
+<meta name="description" content="Nimesh &amp; Pooja — wedding invitation. Tap to open." />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<title>Nimesh &amp; Pooja — Wedding Invitation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&family=Noto+Serif+Devanagari:wght@400;600&family=Noto+Serif+Gujarati:wght@400;600&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="assets/intro-poster.jpg" />
+</head>
+<body class="is-locked">
+
+  <div class="stage">
+
+    <!-- ═════════════ HERO STAGE — the video IS the backdrop, all the way through ═════════════ -->
+    <section class="hero" id="hero">
+
+      <div class="hero__stage">
+
+        <!-- background music: begins with the tap, loops, can be muted -->
+        <audio id="music" src="assets/music.mp3" loop preload="metadata"></audio>
+
+        <!-- the intro film: doors → curtains → couple. It never leaves the screen.
+             Its own audio track has been removed from the file, and it is marked
+             muted as well, so the couple's music is the only sound the page
+             can make. -->
+        <video
+          id="introVideo"
+          class="hero__video"
+          poster="assets/intro-poster.jpg"
+          muted
+          playsinline
+          webkit-playsinline
+          preload="auto"
+        >
+          <source src="assets/wedding-intro.mp4" type="video/mp4" />
+        </video>
+
+        <!-- soft cream wash so the names read against the film -->
+        <div class="hero__scrim" aria-hidden="true"></div>
+        <div class="hero__vig" aria-hidden="true"></div>
+
+        <!-- sparkles over the film -->
+        <canvas id="petals" class="petals" aria-hidden="true"></canvas>
+
+        <!-- names — they pop out WHILE the curtains are still opening -->
+        <div class="hero__content">
+          <p class="invocation reveal" data-d="0">॥ श्री गणेशाय नमः ॥</p>
+
+          <p class="kicker reveal" data-d="1">Together with their families</p>
+
+          <h1 class="name reveal" data-d="2">Nimesh</h1>
+          <p class="parents reveal" data-d="3">
+            son of <em>Sureshkumar Thakkar</em> &amp; <em>Sarala Thakkar</em>
+          </p>
+
+          <div class="amp reveal" data-d="4" aria-hidden="true">
+            <span class="amp__line"></span>
+            <span class="amp__sym">&amp;</span>
+            <span class="amp__line"></span>
+          </div>
+
+          <h1 class="name reveal" data-d="5">Pooja</h1>
+          <p class="parents reveal" data-d="6">
+            daughter of <em>Bhagwan Das Kriplani</em> &amp; <em>Sarita Kriplani</em>
+          </p>
+
+          <p class="ask reveal" data-d="7">
+            request the honour of your presence<br />at their wedding celebration
+          </p>
+        </div>
+
+        <!-- tap anywhere to start -->
+        <button class="tap" id="tapTarget" type="button" aria-label="Tap to open the invitation">
+          <span class="tap__halo" aria-hidden="true"></span>
+          <span class="tap__ring" aria-hidden="true"></span>
+          <span class="tap__hint">
+            <span class="tap__sparkle" aria-hidden="true">✦</span>
+            Tap to open
+          </span>
+        </button>
+
+        <button class="skip" id="skipBtn" type="button" hidden>Skip&nbsp;›</button>
+
+        <!-- cue to keep going -->
+        <button class="scroll-cue" id="scrollCue" type="button" aria-label="Scroll for more">
+          <span>scroll</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ═════════════ THE REST OF THE INVITATION (scrolls up over the film) ═════════════ -->
+    <div class="body" id="card">
+      <div class="body__col">
+
+        <!-- ---------- THE INVITATION ---------- -->
+        <section class="panel invite">
+          <div class="ornament reveal" aria-hidden="true" data-d="0">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+
+          <p class="invite__elder reveal" data-d="0">
+            <span class="invite__elder-names">Late Shri Keshavlal Thakkar &amp; Shrimati Tulsi Thakkar</span>
+            <em>Dada &amp; Dadi</em>
+          </p>
+
+          <p class="invite__lead reveal" data-d="1">
+            With the blessings of Shri Ganesh and our elders,
+          </p>
+
+          <p class="invite__body reveal" data-d="2">
+            it is with hearts full of joy that we invite you to celebrate the wedding of
+            Nimesh and Pooja. Two hearts, two families, and a lifetime of togetherness
+            — we would be honoured to have you beside us on this auspicious day. Come,
+            bless the couple, share in our happiness, and be part of the memories we
+            shall treasure forever.
+          </p>
+
+          <p class="invite__close reveal" data-d="3">
+            Your presence will make our joy complete.
+          </p>
+        </section>
+
+        <!-- ---------- SAVE THE DATE ---------- -->
+        <section class="panel">
+          <div class="ornament reveal" aria-hidden="true">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+
+          <h2 class="panel__title reveal">Save the Date</h2>
+          <p class="panel__sub reveal">Scratch to reveal the date</p>
+
+          <!-- ---------- SCRATCH TO REVEAL ---------- -->
+          <div class="scratch reveal" id="scratch" role="button" tabindex="0"
+               aria-label="Scratch the sheet to reveal the wedding date">
+
+            <!-- What the guest uncovers while scratching: the closed maroon card
+                 and nothing else. The film is held at opacity 0 until the sheet
+                 is fully scratched, so the date can never leak early. -->
+            <div class="scratch__backdrop" aria-hidden="true"></div>
+
+            <video
+              id="dateVideo"
+              class="scratch__media"
+              src="assets/date-reveal.mp4"
+              poster="assets/date-first.jpg"
+              muted playsinline preload="metadata"
+              aria-label="Save the date — 21 December 2026, four in the afternoon"
+            ></video>
+            <!-- particle-free still of the final frame: fades in when the film ends -->
+            <img id="dateStill" class="scratch__still" src="assets/date-still.jpg" alt="" />
+            <canvas id="scratchCanvas" class="scratch__cover" aria-hidden="true"></canvas>
+            <span class="scratch__shine" aria-hidden="true"></span>
+          </div>
+
+          <!-- ---------- COUNTDOWN ---------- -->
+          <div class="countdown reveal" id="countdown">
+            <p class="countdown__label">The celebration begins in</p>
+            <div class="countdown__grid">
+              <div class="unit"><b id="cdD">00</b><span>Days</span></div>
+              <div class="unit"><b id="cdH">00</b><span>Hours</span></div>
+              <div class="unit"><b id="cdM">00</b><span>Minutes</span></div>
+              <div class="unit"><b id="cdS">00</b><span>Seconds</span></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ---------- GALLERY ---------- -->
+        <section class="panel gallery">
+          <div class="ornament reveal" aria-hidden="true">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+
+          <h2 class="panel__title reveal">Nimesh &amp; Pooja</h2>
+          <p class="panel__sub reveal">A few moments together</p>
+
+          <div class="slider reveal" id="slider" aria-roledescription="carousel" aria-label="Photo gallery">
+            <div class="slider__viewport">
+              <ul class="slider__track" id="sliderTrack">
+                <li class="slide">
+                  <img src="assets/couple-1.jpg" alt="Nimesh and Pooja, he in black and she in turquoise, standing together by a green railing" loading="lazy" decoding="async" />
+                </li>
+                <li class="slide">
+                  <img src="assets/couple-2.jpg" alt="Nimesh and Pooja on a jeep in the desert at golden hour, she holding binoculars" loading="lazy" decoding="async" />
+                </li>
+                <li class="slide">
+                  <img src="assets/couple-3.jpg" alt="Nimesh and Pooja walking hand in hand on a desert track past a jeep and sandstone rocks" loading="lazy" decoding="async" />
+                </li>
+              </ul>
+            </div>
+
+            <button class="slider__nav slider__nav--prev" id="sliderPrev" type="button" aria-label="Previous photo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+            </button>
+            <button class="slider__nav slider__nav--next" id="sliderNext" type="button" aria-label="Next photo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+            </button>
+
+            <div class="slider__dots" id="sliderDots" role="tablist" aria-label="Choose a photo"></div>
+          </div>
+        </section>
+
+        <!-- ---------- ITINERARY ---------- -->
+        <section class="panel itinerary">
+          <div class="ornament reveal" aria-hidden="true">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+
+          <h2 class="panel__title reveal">Itinerary</h2>
+          <p class="panel__sub reveal">Three days of celebration</p>
+
+          <div class="itin">
+            <!-- ---------- 19 DECEMBER ---------- -->
+            <article class="day reveal">
+              <header class="day__head">
+                <span class="day__num">19</span>
+                <span class="day__mon">December</span>
+              </header>
+              <ul class="day__list">
+                <li class="slot">
+                  <span class="slot__time">7 PM onwards<em>Evening</em></span>
+                  <span class="slot__what"><b>Jagdish’s Birthday Celebration</b></span>
+                </li>
+              </ul>
+            </article>
+
+            <!-- ---------- 20 DECEMBER ---------- -->
+            <article class="day reveal">
+              <header class="day__head">
+                <span class="day__num">20</span>
+                <span class="day__mon">December</span>
+              </header>
+              <ul class="day__list">
+                <li class="slot">
+                  <span class="slot__time">12 PM onwards<em>Afternoon</em></span>
+                  <span class="slot__what"><b>Haldi &amp; Games</b><i>Games with haldi · Lunch</i>
+                    <span class="theme-chip theme-chip--haldi">Baby Pink theme</span>
+                  </span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">5 PM onwards<em>Evening</em></span>
+                  <span class="slot__what"><b>Ladies Sangeet</b></span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">7 PM onwards<em>Evening</em></span>
+                  <span class="slot__what"><b>Bherana Saheb</b></span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">10 PM onwards<em>Night</em></span>
+                  <span class="slot__what"><b>Dance Performances</b></span>
+                </li>
+              </ul>
+            </article>
+
+            <!-- ---------- 21 DECEMBER ---------- -->
+            <article class="day reveal">
+              <header class="day__head">
+                <span class="day__num">21</span>
+                <span class="day__mon">December</span>
+              </header>
+              <ul class="day__list">
+                <li class="slot">
+                  <span class="slot__time">11 AM onwards<em>Morning</em></span>
+                  <span class="slot__what"><b>Saat Son</b></span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">1 PM onwards<em>Afternoon</em></span>
+                  <span class="slot__what"><b>Lunch &amp; Dikh</b></span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">3 PM onwards<em>Afternoon</em></span>
+                  <span class="slot__what"><b>Baarat</b></span>
+                </li>
+                <li class="slot slot--peak">
+                  <span class="slot__time">4 PM onwards<em>Evening</em></span>
+                  <span class="slot__what"><b>Wedding</b>
+                    <span class="theme-chip theme-chip--wedding">Pastel colour theme</span>
+                  </span>
+                </li>
+                <li class="slot">
+                  <span class="slot__time">8 PM onwards<em>Dinner</em></span>
+                  <span class="slot__what"><b>Dinner Party</b></span>
+                </li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- ---------- VENUE + MAP ---------- -->
+        <section class="panel reveal venue">
+          <div class="ornament" aria-hidden="true">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+          <h2 class="panel__title">The Venue</h2>
+
+          <p class="venue__name">Hotel Decent</p>
+          <p class="venue__addr">R.S. No. 3138, State Highway Road,<br />Opp. CNG Pump, Unava, Ta. Unjha,<br />Mehsana, Gujarat 384160</p>
+
+          <div class="map">
+            <iframe
+              class="map__frame"
+              title="Map to Hotel Decent, Unava, Unjha"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=Hotel%20Decent%2C%20Unava%2C%20Unjha%2C%20Mehsana%2C%20Gujarat%20384160&amp;z=15&amp;output=embed"
+            ></iframe>
+          </div>
+
+          <a
+            class="btn"
+            href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Decent%2C%20R.S.%20No.%203138%2C%20State%20Highway%20Road%2C%20Unava%2C%20Unjha%2C%20Mehsana%2C%20Gujarat%20384160"
+            target="_blank" rel="noopener noreferrer"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 10-14 0c0 4.9 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+            Open in Google Maps
+          </a>
+
+        </section>
+
+        <!-- ---------- THE FAMILIES WHO INVITE YOU ---------- -->
+        <section class="panel family">
+          <div class="ornament reveal" aria-hidden="true">
+            <span class="ornament__line"></span><span class="ornament__dot"></span><span class="ornament__line"></span>
+          </div>
+
+          <h2 class="panel__title reveal">With Love, From the Family</h2>
+          <p class="panel__sub reveal">Who whole-heartedly invite you to celebrate with us</p>
+
+          <div class="family__group reveal">
+            <h3 class="family__head">Thakkar Family Members</h3>
+            <ul class="family__list">
+              <li><b>Shri Sureshkumar Thakkar &amp; Shrimati Sarala Thakkar</b><i>Mata &amp; Pita</i></li>
+              <li><b>Shri Bharatkumar Thakkar &amp; Shrimati Devika Thakkar</b><i>Chacha &amp; Chachi</i></li>
+              <li><b>Shri Shekhar Thakkar &amp; Shrimati Usha Thakkar</b><i>Chacha &amp; Chachi</i></li>
+              <li><b>Shri Jagdishkumar Thakkar</b><i>Chacha</i></li>
+              <li><b>Shrimati Dhanvanti Motvani &amp; Shri Laxmandas Motvani</b><i>Bua &amp; Jijaji</i></li>
+              <li><b>Late Shrimati Vidya Ainani &amp; Shri Gangadhar Ainani</b><i>Bua &amp; Jijaji</i></li>
+              <li><b>Shrimati Rameshwari Khiyani &amp; Shri Chandrakumar Khiyani</b><i>Bua &amp; Jijaji</i></li>
+              <li><b>Shrimati Veena Jaswani &amp; Shri Jagdishkumar Jawani</b><i>Bua &amp; Jijaji</i></li>
+              <li><b>Jyoti, Kajal, Niraj, Harsh, Parth, Hemish &amp; Candy</b><i>Cousins</i></li>
+            </ul>
+          </div>
+
+          <div class="family__group reveal">
+            <h3 class="family__head">Nanihal Paksh</h3>
+            <ul class="family__list">
+              <li><b>Late Shri Gyanchand Khilwani &amp; Shrimati Veenadevi Khilwani</b><i>Nana &amp; Nani</i></li>
+              <li><b>Shri Shyamkumar Khilwani</b><i>Mama</i></li>
+              <li><b>Shri Nitinkumar Khilwani</b><i>Bhai</i></li>
+              <li><b>Shri Manojkumar Goindani &amp; Shrimati Kavita Goindani</b><i>Masad &amp; Masi</i></li>
+            </ul>
+          </div>
+        </section>
+
+        <footer class="foot">
+          <p class="foot__names">Nimesh <span>&amp;</span> Pooja</p>
+          <p class="foot__contact">For any queries or arrangements, contact</p>
+          <div class="foot__phones">
+            <a class="foot__phone" href="tel:+919909057820">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">SureshKumar Thakkar</span>
+              <span class="foot__phone-num">9909057820</span>
+            </a>
+            <a class="foot__phone" href="tel:+919429260221">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">BharatKumar Thakkar</span>
+              <span class="foot__phone-num">9429260221</span>
+            </a>
+            <a class="foot__phone" href="tel:+9197429724055">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">Shekhar Thakkar</span>
+              <span class="foot__phone-num">7429724055</span>
+            </a>
+            <a class="foot__phone" href="tel:+919265086294">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">Harsh Thakkar</span>
+              <span class="foot__phone-num">9265086294</span>
+            </a>
+            <a class="foot__phone" href="tel:+919737064166">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">Nimesh Thakkar</span>
+              <span class="foot__phone-num">9737064166</span>
+            </a>
+            <a class="foot__phone" href="tel:+918866758961">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8a15.1 15.1 0 006.6 6.6l2.2-2.2a1 1 0 011-.25 11.4 11.4 0 003.6.58 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.4 11.4 0 00.58 3.6 1 1 0 01-.25 1z" /></svg>
+              <span class="foot__phone-name">Niraj Thakkar</span>
+              <span class="foot__phone-num">8866758961</span>
+            </a>
+          </div>
+          <p class="foot__small">Made with love · <button class="link" id="replayBtn" type="button">Replay invitation</button></p>
+        </footer>
+
+      </div>
+    </div>
+
+    <!-- lives outside the hero so it stays reachable once the card scrolls up -->
+    <button class="music" id="musicBtn" type="button" hidden aria-pressed="false"
+            aria-label="Mute the music">
+      <svg class="music__on" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 18V6l10-2v12" />
+        <circle cx="6.5" cy="18" r="2.5" />
+        <circle cx="16.5" cy="16" r="2.5" />
+      </svg>
+      <svg class="music__off" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M9 18V6l10-2v12" />
+        <circle cx="6.5" cy="18" r="2.5" />
+        <circle cx="16.5" cy="16" r="2.5" />
+        <path d="M3 3l18 18" />
+      </svg>
+    </button>
+
+    <!-- language toggle: fixed like the music control, always in reach -->
+    <button class="lang" id="langBtn" type="button" aria-label="Show the invitation in Hindi">हिन्दी</button>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
